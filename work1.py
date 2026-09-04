@@ -1,7 +1,15 @@
 
 
-def check_bv(s: str, bracket_open: str, bracket_close: str) -> bool:
+def check_bv(s: str, bracket_open: str) -> bool:
     i = 0
+
+    if bracket_open == "(":
+        bracket_close = ")"
+    elif bracket_open == "[":
+        bracket_close = "]"
+    elif bracket_open == "{":
+        bracket_close = "}"
+
     for char in s:
         if char == bracket_open:
             i += 1
@@ -20,24 +28,57 @@ def check_bv(s: str, bracket_open: str, bracket_close: str) -> bool:
 
 
 def bv(s: str) -> bool:
-    if ("(" or "[" or "{") in s:
-        if "(" in s:
-            if check_bv(s, "(", ")"):
-                ok1 = 1
-        else:
-            
+    stack = []
+    mapping = {")" : "(",
+               "]" : "[",
+               "}" : "{"
+               }
+    for char in s:
+        if char in mapping.values():
+            stack.append(char)
+        elif char in mapping:
+            if not stack or stack[-1] != mapping[char]:
+                return False
 
-        if "[" in s:
-            if check_bv(s, "[", "]"):
-                ok2 = 2
-        if "{" in s:
-            if check_bv(s, "{", "}"):
-                ok3 = 1
-
-
+    return True
 
 
+def bracket_validator(s: str) -> bool:
+    pairs = {')': '(', ']': '[', '}': '{'}
+    stack = []
+    for ch in s:
+        if ch in '([{':
+            stack.append(ch)
+        elif ch in ')]}':
+            if not stack or stack[-1] != pairs[ch]: # ([)]
+                return False
+            stack.pop()
+    return not stack
 
-    return False
 
-print(bv("(((j[hj)))"))
+
+#def bv(s: str) -> bool:
+#    if ("(" or "[" or "{") in s:
+#        char = "([{"
+#        tmp = 1
+
+#        for c in char:
+#            res = 0
+#            op = 0
+#            if c in s:
+#                res = 1
+#                if check_bv(s, c):
+#                    op = 1
+#            if res and not op:
+#                tmp = 0
+
+#        if not tmp:
+#            return False
+#        else:
+#            return True
+
+#    return True
+
+
+
+print(bracket_validator("("))
