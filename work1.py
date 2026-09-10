@@ -57,6 +57,20 @@ def bracket_validator(s: str) -> bool:
 
 
 
+def br_val(s:str) -> bool:
+    pairs = {")" : "(", "]" : "[", "}" : "{"}
+    stack = []
+
+    for c in s:
+        if c in "({[":
+            stack.append(c)
+        elif c in ")]}":
+            if not stack or stack[-1] != pairs[c]:
+                return False
+            stack.pop()
+    return not stack
+
+
 #def bv(s: str) -> bool:
 #    if ("(" or "[" or "{") in s:
 #        char = "([{"
@@ -81,4 +95,4 @@ def bracket_validator(s: str) -> bool:
 
 
 
-print(bracket_validator("("))
+print(br_val("([)]"))
